@@ -12,7 +12,9 @@
                         <ul>
                             <li>By {{ object.auther.full_name }}</li>
                             <li>{{ object.created_at|date:'F d, Y' }}</li>
-                            <li>8 Comments</li>
+                            {% if object.comments.values %}
+                                <li>{{ object.comments.values.count }} Comments</li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -89,6 +91,16 @@
                                     {% endif %}
                                 </div>
                             </div>
+                        </div>
+                        <div class="container">
+                            {% for comment in object.comments.values %}
+                                <div class="row mb-3">
+                                    <div class="col-6"><strong>{{ comment.name }}</strong></div>
+                                    <div class="col-6 text-right">{{ comment.created_at|timesince }} ago</div>
+                                    <div class="col-12 mt-2">{{ comment.comment }}</div>
+                                </div>
+                                <hr>
+                            {% endfor %}
                         </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
