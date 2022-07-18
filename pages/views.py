@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 
 
 class HomePageView(TemplateView):
@@ -8,3 +8,6 @@ class HomePageView(TemplateView):
 
 class ContactView(TemplateView):
     template_name = 'contact.html'
+
+
+

@@ -27,7 +27,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
                     <div class="blog__details__pic">
-                        <img src="{{ object.banner.url}}" alt="">
+                        <img src="{{ object.banner.url }}" alt="">
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -52,7 +52,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__author">
                                         <div class="blog__details__author__pic">
-                                            <img src="{{ object.auther.image.url}}" alt="">
+                                            <img src="{{ object.auther.image.url }}" alt="">
                                         </div>
                                         <div class="blog__details__author__text">
                                             <h5>{{ object.auther.full_name }}</h5>
@@ -71,34 +71,41 @@
                         <div class="blog__details__btns">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span> Previous Pod</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
-                                    </a>
+                                    {% if object.get_previous_by_created_at %}
+                                        <a href="{% url 'blogs:detail' pk=object.get_previous_by_created_at.pk %}"
+                                           class="blog__details__btns__item">
+                                            <p><span class="arrow_left"></span> Previous Pod</p>
+                                            <h5>{{ object.get_previous_by_created_at.title }}</h5>
+                                        </a>
+                                    {% endif %}
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Next Pod <span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
-                                    </a>
+                                    {% if object.get_next_by_created_at %}
+                                        <a href="{% url 'blogs:detail' pk=object.get_next_by_created_at.pk %}"
+                                           class="blog__details__btns__item blog__details__btns__item--next">
+                                            <p>Next Pod <span class="arrow_right"></span></p>
+                                            <h5>{{ object.get_next_by_created_at.title }}</h5>
+                                        </a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <form action="{% url 'blogs:comment' pk=object.pk %}" method="post">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                        <input name="name" type="text" placeholder="Name">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
+                                        <input name="email" type="email" placeholder="Email">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
+                                        <input name="phone" type="text" placeholder="Phone">
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
+                                        <textarea name="comment" placeholder="Comment"></textarea>
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>
@@ -110,5 +117,6 @@
         </div>
     </section>
     <!-- Blog Details Section End -->
+
 
 {% endblock %}

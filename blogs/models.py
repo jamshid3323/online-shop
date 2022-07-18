@@ -49,7 +49,7 @@ class CommentModel(models.Model):
     email = models.EmailField(verbose_name=_('email'))
     phone = models.CharField(max_length=13, verbose_name=_('phone'))
     comment = models.TextField(verbose_name=_('comment'))
-    post = models.ForeignKey(PostModel, related_name='comments', on_delete=models.CASCADE, verbose_name=_('post'))
+    post = models.ForeignKey(PostModel, on_delete=models.CASCADE, related_name='comments', verbose_name=_('post'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
 
     def __str__(self):
