@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import ProductTagModel, ProductModel, CategoryModel, ProductBrandModel, ProductColorModel, ProductSizeModel
+from .forms import ColorModelAdminForm
+from django.utils.safestring import mark_safe
 
 
 @admin.register(ProductTagModel)
@@ -25,9 +27,14 @@ class ProductBrandModelAdmin(admin.ModelAdmin):
 
 @admin.register(ProductColorModel)
 class ProductColorModelAdmin(admin.ModelAdmin):
-    list_display = ['code']
+    list_display = ['code', 'color']
     list_display_links = ['code']
     search_fields = ['code']
+    form = ColorModelAdminForm
+
+    def color(self, object):
+        free_space = '&nbsp;' * 2
+        return mark_safe(f"<div style='background-color: {object.code}; width: 40px;'>{free_space}</div>")
 
 
 @admin.register(CategoryModel)

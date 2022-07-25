@@ -27,6 +27,7 @@ class ShopView(ListView):
         data['categories'] = CategoryModel.objects.all()
         data['tags'] = ProductTagModel.objects.all()
 
+
         return data
 
 
