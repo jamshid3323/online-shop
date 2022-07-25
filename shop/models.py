@@ -16,6 +16,42 @@ class CategoryModel(models.Model):
         verbose_name_plural = _('categoies')
 
 
+class ProductBrandModel(models.Model):
+    name = models.CharField(max_length=60, verbose_name=_('name'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('brand')
+        verbose_name_plural = _('brands')
+
+
+class ProductSizeModel(models.Model):
+    name = models.CharField(max_length=60, verbose_name=_('name'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('size')
+        verbose_name_plural = _('sizes')
+
+
+class ProductColorModel(models.Model):
+    code = models.CharField(max_length=60, verbose_name=_('code'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
+
+    def __str__(self):
+        return self.code
+
+    class Meta:
+        verbose_name = _('color')
+        verbose_name_plural = _('colors')
+
+
 class ProductTagModel(models.Model):
     name = models.CharField(max_length=60, verbose_name=_('name'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
@@ -45,6 +81,23 @@ class ProductModel(models.Model):
         ProductTagModel,
         related_name='products',
         verbose_name=_('tag')
+    )
+    size = models.ManyToManyField(
+        ProductSizeModel,
+        related_name='products',
+        verbose_name=_('sizes')
+    )
+    color = models.ManyToManyField(
+        ProductColorModel,
+        related_name='products',
+        verbose_name=_('colors')
+    )
+    brand = models.ForeignKey(
+        ProductBrandModel,
+        on_delete=models.RESTRICT,
+        related_name='products',
+        verbose_name=_('brands'),
+        null=True
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
 
