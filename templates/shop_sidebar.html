@@ -17,7 +17,7 @@
                         <div class="shop__sidebar__categories">
                             <ul class="nice-scroll">
                                 {% for category in categories %}
-                                    <li><a href="?cat={{ category.pk }}"
+                                    <li><a onclick="addUrlParameter('cat', {{ category.pk }})"
                                            class="{% if request.GET.cat == category.pk|stringformat:'i' %}text-dark{% endif %}">{{ category.name }}
                                         ({{ category.products.count }})</a></li>
                                 {% endfor %}
@@ -144,7 +144,7 @@
                         <div class="shop__sidebar__tags">
                             {% for tag in tags %}
                                 <a style="{% if request.GET.tag == tag.pk|stringformat:'i' %}background: #000; color: #fff;{% endif %}"
-                                   href="?tag={{ tag.pk }}">#{{ tag.name }}</a>
+                                   onclick="addUrlParameter('tag', {{ tag.pk }})">#{{ tag.name }}</a>
                             {% endfor %}
                         </div>
                     </div>
