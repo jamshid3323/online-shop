@@ -6,6 +6,8 @@
             cursor: pointer;
         }
     </style>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -48,8 +50,12 @@
                                     <p>Sort by Price:</p>
                                     <select onchange="addUrlParameter('sort', this.value)">
                                         <option value="">-----</option>
-                                        <option {% if request.GET.sort == 'price' %}selected{% endif %} value="price">Low To High</option>
-                                        <option {% if request.GET.sort == '-price' %}selected{% endif %} value="-price">High To Low</option>
+                                        <option {% if request.GET.sort == 'price' %}selected{% endif %} value="price">
+                                            Low To High
+                                        </option>
+                                        <option {% if request.GET.sort == '-price' %}selected{% endif %} value="-price">
+                                            High To Low
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -86,6 +92,8 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
     <script>
         function addUrlParameter(name, value) {
             let searchParameter = new URLSearchParams(window.location.search)
@@ -96,5 +104,15 @@
             }
             window.location.search = searchParameter.toString()
         }
+
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            min: {{ min_price }},
+            max: {{ max_price }},
+            from: 50,
+            to: 150,
+            grid: true,
+            prefix: "$"
+        });
     </script>
 {% endblock %}
