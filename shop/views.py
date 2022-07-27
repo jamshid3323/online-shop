@@ -39,6 +39,11 @@ class ShopView(ListView):
             qs = qs.order_by('price')
         elif sort == '-price':
             qs = qs.order_by('-price')
+
+        price = self.request.GET.get('price')
+        if price:
+            min, max = price.split(';')
+            qs = qs.filter(real_price__gte=min, real_price__lte=max)
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -48,7 +53,8 @@ class ShopView(ListView):
         data['brands'] = ProductBrandModel.objects.all()
         data['sizes'] = ProductSizeModel.objects.all()
         data['colors'] = ProductColorModel.objects.all()
-        data['min_price'], data['max_price'] = ProductModel.objects.aggregate(Min('price'), Max('price')).values()
+        data['min_price'], data['max_price'] = ProductModel.objects.aggregate(Min('real_price'),
+                                                                              Max('real_price')).values()
 
         return data
 
