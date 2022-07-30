@@ -33,7 +33,11 @@
     </div>
     <div class="product__item__text">
         <h6>{{ product.title }}</h6>
-        <a href="{% url 'shop:cart' id=product.pk %}?next={{ request.path }}" class="add-cart">+ Add To Cart</a>
+        {% if product|is_cart:request %}
+            <a href="{% url 'shop:cart' id=product.pk %}?next={{ request.path }}" class="add-cart">- Remove from Cart</a>
+        {% else %}
+            <a href="{% url 'shop:cart' id=product.pk %}?next={{ request.path }}" class="add-cart">+ Add To Cart</a>
+        {% endif %}
         <div class="rating">
             <i class="fa fa-star"></i>
             <i class="fa fa-star"></i>
