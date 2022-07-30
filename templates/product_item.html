@@ -1,4 +1,4 @@
-{% load static %}
+{% load static my_tags %}
 <div class="product__item sale">
     <div class="product__item__pic set-bg"
          data-setbg="{{ product.main_image.url }}">
@@ -10,11 +10,19 @@
         {% endif %}
         <ul class="product__hover">
             {% if request.user.is_authenticated %}
-                <li>
-                    <a href="{% url 'shop:wishlist' pk=product.pk %}?next={{ request.path }}">
-                        <img src="{% static 'img/icon/heart.png' %}" alt="">
-                    </a>
-                </li>
+                {% if product|is_wishlist:request %}
+                    <li>
+                        <a href="{% url 'shop:wishlist' pk=product.pk %}?next={{ request.path }}">
+                            <img src="{% static 'img/img.png' %}" alt="">
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'shop:wishlist' pk=product.pk %}?next={{ request.path }}">
+                            <img src="{% static 'img/icon/heart.png' %}" alt="">
+                        </a>
+                    </li>
+                {% endif %}
             {% endif %}
             <li>
                 <a href="{% url 'shop:detail' pk=product.pk %}">
