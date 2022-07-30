@@ -1,7 +1,7 @@
 from django import template
 
 register = template.Library()
-from shop.models import WishlistModel
+from shop.models import WishlistModel, ProductModel
 
 
 @register.simple_tag()
@@ -21,3 +21,8 @@ def is_wishlist(product, request):
 @register.filter()
 def is_cart(product, request):
     return product.id in request.session.get('cart', [])
+
+
+@register.simple_tag()
+def cart_info(request):
+    return ProductModel.get_cart_info(request)

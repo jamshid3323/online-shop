@@ -1,4 +1,4 @@
-{% load static %}
+{% load static my_tags%}
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
@@ -90,8 +90,9 @@
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'shop:wishlists' %}"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
                     {% endif %}
-                    <a href="#"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
+                    {% cart_info request as info %}
+                    <a href="#"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span>{{ info.0 }}</span></a>
+                    <div class="price">${{ info.1 }}</div>
                 </div>
             </div>
         </div>
