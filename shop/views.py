@@ -80,3 +80,10 @@ def wishlist_view(request, pk):
     WishlistModel.create_or_delete(request.user, product)
 
     return redirect(request.GET.get('next', '/'))
+
+
+class WishlistListView(ListView):
+    template_name = 'wishlist.html'
+
+    def get_queryset(self):
+        return ProductModel.objects.filter(wishlistmodel__user_id=self.request.user)
