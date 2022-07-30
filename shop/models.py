@@ -1,7 +1,10 @@
-from django.db import models
+from django.contrib.auth import get_user_model
+from django.db import models, IntegrityError
 from django.utils.translation import gettext_lazy as _
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils import timezone
+
+UserModel = get_user_model()
 
 
 class CategoryModel(models.Model):
@@ -115,3 +118,23 @@ class ProductModel(models.Model):
     class Meta:
         verbose_name = _('product')
         verbose_name_plural = _('products')
+
+
+class WishlistModel(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name=_('wishlists'), verbose_name=_('user'))
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_('product'))
+
+    @staticmethod
+    def create_or_delete(user, product):
+        try:
+            return WishlistModel.objects.create(user=user, product=product)
+        except IntegrityError:
+            return WishlistModel.objects.get(user=user, product=product).delete()
+
+    def __str__(self):
+        return f"{self.user.get_full_name()} | {self.product.title}"
+
+    class Meta:
+        verbose_name = _('wishlist')
+        verbose_name_plural = _('wishlists')
+        unique_together = 'user', 'product'

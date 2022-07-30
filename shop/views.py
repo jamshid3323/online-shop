@@ -1,7 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
-from .models import ProductModel, CategoryModel, ProductTagModel, ProductColorModel, ProductBrandModel, ProductSizeModel
+from .models import ProductModel, CategoryModel, ProductTagModel, ProductColorModel, ProductBrandModel, \
+    ProductSizeModel, WishlistModel
 
 
 class ShopView(ListView):
@@ -70,3 +72,11 @@ class ProductDetailView(DetailView):
         data['products'] = ProductModel.objects.all().exclude(id=self.object.pk)[:4]
 
         return data
+
+
+@login_required
+def wishlist_view(request, pk):
+    product = get_object_or_404(ProductModel, pk=pk)
+    WishlistModel.create_or_delete(request.user, product)
+
+    return redirect(request.GET.get('next', '/'))
